@@ -29,16 +29,27 @@ public class LoginSceneController {
     }
     
     @FXML
-    protected Button btLogin;
+    protected Button logar;
  
     @FXML
-    protected TextField tfLogin;
+    protected TextField name_log;
  
     @FXML
-    protected PasswordField pfPass;
+    protected PasswordField pass_log;
  
     @FXML
-    protected CheckBox cbPass;
+    protected CheckBox seePass;
+
+    @FXML
+    protected void toRegister() throws Exception{
+        var crrStage = (Stage)logar.getScene().getWindow();
+        crrStage.close();
+ 
+        var stage = new Stage();
+        var scene = RegisterSceneController.CreateScene();
+        stage.setScene(scene);
+        stage.show();
+    }
  
     @FXML
     protected void submit(ActionEvent e) throws Exception {
@@ -46,14 +57,8 @@ public class LoginSceneController {
         Context ctx = new Context();
 
         var query = ctx.createQuery(User.class, "from User u where u.name = :name");
-        query.setParameter("name", this.tfLogin.getText());
+        query.setParameter("name", this.name_log.getText());
         var users = query.getResultList();
-
-        // System.out.println("sla");
-        // for(int i = 0; i < users.size(); i++){
-        //     System.out.println("Nome -"+users.get(i).getName());
-        //     System.out.println("Senha -" +users.get(i).getPassword());
-        // }
 
         if (users.size() <= 0) {
             Alert alert = new Alert(
@@ -67,7 +72,7 @@ public class LoginSceneController {
         
         var user = users.get(0);
 
-        if (!pfPass.getText().equals(user.getPassword())) {
+        if (!pass_log.getText().equals(user.getPassword())) {
             Alert alert = new Alert(
                 AlertType.ERROR,
                 "Senha incorreta!",
@@ -77,8 +82,7 @@ public class LoginSceneController {
             return;
         }
  
-        var crrStage = (Stage)btLogin
-            .getScene().getWindow();
+        var crrStage = (Stage)logar.getScene().getWindow();
         crrStage.close();
  
         var stage = new Stage();

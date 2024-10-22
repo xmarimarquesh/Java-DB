@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
- 
-<VBox prefHeight="119.0" prefWidth="318.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.desktopapp.LoginSceneController">
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="453.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.desktopapp.LoginSceneController">
   <children>
     <MenuBar prefHeight="0.0" prefWidth="640.0" VBox.vgrow="NEVER" />
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="117.0" prefWidth="247.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="171.0" prefWidth="318.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button id="btLogin" fx:id="btLogin" layoutX="255.0" layoutY="80.0" mnemonicParsing="false" onAction="#submit" text="Logar" />
-            <CheckBox id="cbPass" fx:id="cbPass" layoutX="14.0" layoutY="84.0" mnemonicParsing="false" text="Ver Senha" />
-            <Label layoutX="14.0" layoutY="14.0" text="login" />
-            <Label layoutX="14.0" layoutY="47.0" text="Senha" />
-            <TextField id="tfLogin" fx:id="tfLogin" layoutX="79.0" layoutY="10.0" prefHeight="25.0" prefWidth="223.0" />
-            <PasswordField id="pfPass" fx:id="pfPass" layoutX="79.0" layoutY="43.0" prefHeight="25.0" prefWidth="223.0" />
+            <Button id="btLogin" fx:id="logar" layoutX="285.0" layoutY="315.0" mnemonicParsing="false" onAction="#submit" prefHeight="25.0" prefWidth="95.0" text="Logar" />
+            <CheckBox id="cbPass" fx:id="verPass" layoutX="109.0" layoutY="282.0" mnemonicParsing="false" text="Ver Senha" />
+            <Label layoutX="108.0" layoutY="174.0" text="Login" />
+            <Label layoutX="109.0" layoutY="230.0" text="Senha" />
+            <TextField id="tfLogin" fx:id="name_log" layoutX="108.0" layoutY="197.0" prefHeight="25.0" prefWidth="272.0" />
+            <PasswordField id="pfPass" fx:id="pass_log" layoutX="108.0" layoutY="249.0" prefHeight="25.0" prefWidth="272.0" />
+            <Text layoutX="207.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+            <Hyperlink layoutX="285.0" layoutY="383.0" onAction="#toRegister" text="cadastre-se!" />
+            <Text layoutX="129.0" layoutY="399.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ainda não possui uma conta?" />
          </children>
     </AnchorPane>
   </children>

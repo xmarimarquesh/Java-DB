@@ -13,15 +13,16 @@ public class App extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Context ctx = new Context();
+        
         User user = new User();
         user.setName("mari");
-        user.setPassword("mari");
+        user.setPassword("a");
 
-        Context ctx = new Context();
         ctx.begin();
         ctx.persist(user);
         ctx.commit();
-        
+
         Scene scene = LoginSceneController.CreateScene();
         primaryStage.setScene(scene);
         primaryStage.show();
