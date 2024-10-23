@@ -14,12 +14,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class RegisterProductSceneController {
-    public static Scene CreateScene() throws Exception
+public class EditProductSceneController {
+    public static Scene CreateScene(Product product) throws Exception
     {
-        URL sceneUrl = MainSceneController.class.getResource("register-product-scene.fxml");
-        Parent root = FXMLLoader.load(sceneUrl);
+        URL sceneUrl = MainSceneController.class.getResource("edit-product-scene.fxml");
+        FXMLLoader loader = new FXMLLoader(sceneUrl);
+        Parent root = loader.load();
         Scene scene = new Scene(root);
+
+        EditProductSceneController controller = loader.getController();
+        controller.setProduto(product);
+        controller.loadData();
+
         return scene;
     }
 
@@ -35,22 +41,28 @@ public class RegisterProductSceneController {
     @FXML
     protected TextField qtdProd;
 
-    @FXML
-    protected void toMain() throws Exception {
-        var crrStage = (Stage)nameProd.getScene().getWindow();
-        crrStage.close();
 
-        var stage = new Stage();
-        var scene = MainSceneController.CreateScene();
-        stage.setScene(scene);
-        stage.show();
+    protected Product produto;
+    public void setProduto(Product produto) { this.produto = produto; }
+
+    public void loadData() {
+        Context ctx = new Context();
+        ctx.begin();
+        var query = ctx.createQuery(this.produto.getClass(), "from Product p where p.id = :id");
+        query.setParameter("id", this.produto.getId());
+        var p = query.getResultList();
+
+        nameProd.setText(p.get(0).getName());
+        descProd.setText(p.get(0).getDescricao());
+        precoProd.setText(String.valueOf(p.get(0).getPreco()));
+        qtdProd.setText(String.valueOf(p.get(0).getQuantidade()));
     }
 
     @FXML
-    protected void adicionar() throws Exception {
+    protected void editar() throws Exception {
         Context ctx = new Context();
-        Product produto = new Product();
-
+        ctx.begin();
+        
         if (precoProd.getText().isEmpty() || qtdProd.getText().isEmpty() || nameProd.getText().isEmpty() || descProd.getText().isEmpty()) {
             Alert alert = new Alert(
                 AlertType.ERROR,
@@ -60,13 +72,13 @@ public class RegisterProductSceneController {
             alert.showAndWait();
             return;
         }
-        
-        produto.setName(nameProd.getText());
-        produto.setDescricao(descProd.getText());
 
-        try{
-            produto.setPreco(Double.parseDouble(precoProd.getText()));
-            produto.setQuantidade(Integer.parseInt(qtdProd.getText()));
+        this.produto.setName(nameProd.getText());
+        this.produto.setDescricao(descProd.getText());
+        
+        try {
+            this.produto.setPreco(Double.parseDouble(precoProd.getText()));
+            this.produto.setQuantidade(Integer.parseInt(qtdProd.getText()));
         } catch (NumberFormatException e) {
             System.out.println("Formato de preco ou quantidade inválido. " + e);
             Alert alert = new Alert(
@@ -78,11 +90,9 @@ public class RegisterProductSceneController {
             return;
         }
 
-        ctx.begin();
-        ctx.persist(produto);
-        ctx.commit();
+        ctx.update(this.produto);
 
-        var crrStage = (Stage)qtdProd.getScene().getWindow();
+        var crrStage = (Stage) qtdProd.getScene().getWindow();
         crrStage.close();
 
         var stage = new Stage();

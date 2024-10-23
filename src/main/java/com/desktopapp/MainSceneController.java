@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
@@ -25,6 +26,7 @@ public class MainSceneController implements Initializable{
         URL sceneUrl = MainSceneController.class.getResource("main-scene.fxml");
         Parent root = FXMLLoader.load(sceneUrl);
         Scene scene = new Scene(root);
+        
         return scene;
     }
 
@@ -47,7 +49,7 @@ public class MainSceneController implements Initializable{
     protected TableColumn<Product, Void> action_col;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources){
         nome_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         desc_col.setCellValueFactory(new PropertyValueFactory<>("descricao"));
         preco_col.setCellValueFactory(new PropertyValueFactory<>("preco"));
@@ -56,15 +58,43 @@ public class MainSceneController implements Initializable{
         action_col.setCellFactory(param -> new TableCell<Product, Void>() {
             private final Button editButton = new Button("Editar");
             private final Button deleteButton = new Button("Excluir");
-
             {
                 editButton.setOnAction(event -> {
                     Product product = getTableView().getItems().get(getIndex());
-                    System.out.println("Editar: " + product.getName());
+                    System.out.println("Nome: " + product.getName());
+                    System.out.println("Desc: " + product.getDescricao());
+                    System.out.println("Preco: " + product.getPreco());
+                    System.out.println("Qtd: " + product.getQuantidade());
+
+                    var newStage = new Stage();
+                    Scene newScene;
+                    try {
+                        var crrStage = (Stage) table.getScene().getWindow();
+                        crrStage.close();
+                        newScene = EditProductSceneController.CreateScene(product);
+                        newStage.setScene(newScene);
+                        newStage.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
 
                 deleteButton.setOnAction(event -> {
-                    getTableView().getItems().remove(getIndex());
+                    Alert alert = new Alert(
+                        AlertType.CONFIRMATION,
+                        "Você tem certeza que deseja apagar este item?",
+                        ButtonType.OK,
+                        ButtonType.CANCEL
+                    );
+
+                    alert.showAndWait().filter(res -> res == ButtonType.OK).ifPresent(res -> {
+                            Context ctx = new Context();
+                            ctx.begin();
+                            Product product = getTableView().getItems().remove(getIndex());
+                            ctx.delete(product);
+                            ctx.commit();
+                    });
+                    
                 });
 
                 HBox hbox = new HBox(editButton, deleteButton);
@@ -85,8 +115,6 @@ public class MainSceneController implements Initializable{
 
         table.setItems(listaDeProducts());
     }
-
-
 
 
     private ObservableList<Product> listaDeProducts() {
