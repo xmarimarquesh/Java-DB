@@ -1,5 +1,7 @@
 package com.desktopapp.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,5 +36,13 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private LocalDate data;
+    public LocalDate getData() {
+        return data;
+    }
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 }

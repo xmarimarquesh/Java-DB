@@ -1,5 +1,7 @@
 package com.desktopapp;
 
+import java.time.LocalDate;
+
 import com.desktopapp.model.User;
 
 import javafx.application.Application;
@@ -18,6 +20,7 @@ public class App extends Application{
         User user = new User();
         user.setName("mari");
         user.setPassword("a");
+        user.setData(LocalDate.of(2006, 5, 28));
 
         ctx.begin();
         ctx.persist(user);

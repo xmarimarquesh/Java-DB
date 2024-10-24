@@ -129,7 +129,7 @@ public class Context {
             return;
         }
         try {
-            em.remove(object);
+            em.remove(em.contains(object) ? object : em.merge(object));
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {

@@ -21,14 +21,30 @@ import javafx.fxml.Initializable;
  
 public class MainSceneController implements Initializable{
      
+    public static Scene CreateScene(Long id) throws Exception
+    {
+        URL sceneUrl = MainSceneController.class.getResource("main-scene.fxml");
+        FXMLLoader loader = new FXMLLoader(sceneUrl);
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+
+        MainSceneController controller = loader.getController();
+        controller.setId(id);
+
+        return scene;
+    }
+
     public static Scene CreateScene() throws Exception
     {
         URL sceneUrl = MainSceneController.class.getResource("main-scene.fxml");
         Parent root = FXMLLoader.load(sceneUrl);
         Scene scene = new Scene(root);
-        
+
         return scene;
     }
+
+    protected long id;
+    public void setId(long id) { this.id = id; }
 
     @FXML
     protected TableView<Product> table;
@@ -88,13 +104,12 @@ public class MainSceneController implements Initializable{
                     );
 
                     alert.showAndWait().filter(res -> res == ButtonType.OK).ifPresent(res -> {
-                            Context ctx = new Context();
-                            ctx.begin();
-                            Product product = getTableView().getItems().remove(getIndex());
-                            ctx.delete(product);
-                            ctx.commit();
+                        System.out.println("deletar");
+                        Context ctx = new Context();
+                        ctx.begin();
+                        Product product = getTableView().getItems().remove(getIndex());
+                        ctx.delete(product);
                     });
-                    
                 });
 
                 HBox hbox = new HBox(editButton, deleteButton);
@@ -132,6 +147,14 @@ public class MainSceneController implements Initializable{
 
         var stage = new Stage();
         var scene = RegisterProductSceneController.CreateScene();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    protected void toProfile() throws Exception{
+        var stage = new Stage();
+        var scene = EditProfileSceneController.CreateScene(id);
         stage.setScene(scene);
         stage.show();
     }

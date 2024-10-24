@@ -41,7 +41,6 @@ public class EditProductSceneController {
     @FXML
     protected TextField qtdProd;
 
-
     protected Product produto;
     public void setProduto(Product produto) { this.produto = produto; }
 

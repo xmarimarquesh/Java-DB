@@ -86,7 +86,7 @@ public class LoginSceneController {
         crrStage.close();
  
         var stage = new Stage();
-        var scene = MainSceneController.CreateScene();
+        var scene = MainSceneController.CreateScene(user.getId());
         stage.setScene(scene);
         stage.show();
     }
