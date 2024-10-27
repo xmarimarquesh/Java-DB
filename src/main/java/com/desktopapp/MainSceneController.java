@@ -3,6 +3,7 @@ package com.desktopapp;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import java.util.List;
 
 import com.desktopapp.model.Product;
 
@@ -12,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
@@ -63,6 +67,39 @@ public class MainSceneController implements Initializable{
 
     @FXML
     protected TableColumn<Product, Void> action_col;
+
+    @FXML
+    protected TextField tfPesquisa;
+
+    @FXML 
+    protected void pesquisar() throws Exception {
+        realizarPesquisa();
+    }
+
+    @FXML 
+    protected void pesquisarEnter(KeyEvent e) throws Exception {
+        if (e.getCode() == KeyCode.ENTER) {
+            realizarPesquisa();
+        }
+    }
+
+    private void realizarPesquisa() {
+        String textoPesquisa = tfPesquisa.getText().trim().toLowerCase();
+        if (textoPesquisa.isEmpty()) {
+            initialize(null, null);
+        } else {
+            Context ctx = new Context();
+            var query = ctx.createQuery(Product.class, 
+                "SELECT p FROM Product p WHERE LOWER(p.name) LIKE :searchText OR LOWER(p.descricao) LIKE :searchText");
+            query.setParameter("searchText", "%" + textoPesquisa + "%");
+
+            List<Product> produtosFiltrados = query.getResultList();
+            ObservableList<Product> listaFiltrada = FXCollections.observableArrayList(produtosFiltrados);
+
+            table.setItems(listaFiltrada);
+        }
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources){

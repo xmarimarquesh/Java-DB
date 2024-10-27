@@ -3,6 +3,8 @@ package com.desktopapp;
 import java.net.URL;
 import java.time.LocalDate;
 
+import java.util.List;
+
 import com.desktopapp.model.User;
 
 import javafx.fxml.FXML;
@@ -44,9 +46,19 @@ public class EditProfileSceneController {
     private void loadData() throws Exception {
         Context ctx = new Context();
         ctx.begin();
+    
+        // Carregar o usuário específico
         user = ctx.find(user.getClass(), this.id);
         name.setText(user.getName());
         data.setValue(LocalDate.of(user.getData().getYear(), user.getData().getMonth(), user.getData().getDayOfMonth()));
+    
+        // Buscar e imprimir todos os usuários no banco de dados
+        System.out.println("=== Lista de Usuários no Banco de Dados ===");
+        List<User> allUsers = ctx.findAll(User.class);
+        for (User u : allUsers) {
+            System.out.println("ID: " + u.getId() + ", Nome: " + u.getName() + ", Data: " + u.getData());
+        }
+        System.out.println("==========================================");
     }
 
     @FXML
