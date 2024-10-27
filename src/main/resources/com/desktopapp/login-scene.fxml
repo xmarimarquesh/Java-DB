@@ -17,12 +17,14 @@
     <MenuBar prefHeight="0.0" prefWidth="640.0" VBox.vgrow="NEVER" />
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="171.0" prefWidth="318.0" VBox.vgrow="ALWAYS">
          <children>
+            <CheckBox fx:id="seePass" onAction="#togglePasswordVisibility" layoutX="109.0" layoutY="282.0" mnemonicParsing="false" text="Ver Senha" />
             <Button id="btLogin" fx:id="logar" layoutX="285.0" layoutY="315.0" mnemonicParsing="false" onAction="#submit" prefHeight="25.0" prefWidth="95.0" text="Logar" />
-            <CheckBox id="cbPass" fx:id="verPass" layoutX="109.0" layoutY="282.0" mnemonicParsing="false" text="Ver Senha" />
             <Label layoutX="108.0" layoutY="174.0" text="Login" />
             <Label layoutX="109.0" layoutY="230.0" text="Senha" />
             <TextField id="tfLogin" fx:id="name_log" layoutX="108.0" layoutY="197.0" prefHeight="25.0" prefWidth="272.0" />
-            <PasswordField id="pfPass" fx:id="pass_log" layoutX="108.0" layoutY="249.0" prefHeight="25.0" prefWidth="272.0" />
+            <PasswordField id="pfPass" fx:id="pass_log" layoutX="108.0" layoutY="249.0" prefHeight="25.0" prefWidth="272.0"  />
+            <TextField fx:id="pass_log_visible" visible="false" managed="false" layoutX="108.0" layoutY="249.0" prefHeight="25.0" prefWidth="272.0" />
+
             <Text layoutX="207.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
                <font>
                   <Font size="30.0" />

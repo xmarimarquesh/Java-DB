@@ -48,9 +48,16 @@ public class EditProfileSceneController {
         ctx.begin();
     
         // Carregar o usuário específico
-        user = ctx.find(user.getClass(), this.id);
-        name.setText(user.getName());
-        data.setValue(LocalDate.of(user.getData().getYear(), user.getData().getMonth(), user.getData().getDayOfMonth()));
+        user = ctx.find(User.class, this.id); // Corrigir: deve usar o ID passado
+        if (user != null) {
+            name.setText(user.getName());
+            if (user.getData() != null) { // Verifique se data não é null
+                data.setValue(LocalDate.of(user.getData().getYear(), user.getData().getMonth(), user.getData().getDayOfMonth()));
+            }
+        } else {
+            Alert alert = new Alert(AlertType.ERROR, "Usuário não encontrado!", ButtonType.OK);
+            alert.showAndWait();
+        }
     
         // Buscar e imprimir todos os usuários no banco de dados
         System.out.println("=== Lista de Usuários no Banco de Dados ===");
@@ -60,6 +67,7 @@ public class EditProfileSceneController {
         }
         System.out.println("==========================================");
     }
+    
 
     @FXML
     protected void editarPerfil(){

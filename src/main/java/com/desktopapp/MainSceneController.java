@@ -15,7 +15,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.Parent;
@@ -37,17 +36,9 @@ public class MainSceneController implements Initializable{
 
         return scene;
     }
-
-    public static Scene CreateScene() throws Exception
-    {
-        URL sceneUrl = MainSceneController.class.getResource("main-scene.fxml");
-        Parent root = FXMLLoader.load(sceneUrl);
-        Scene scene = new Scene(root);
-
-        return scene;
-    }
-
+    
     protected long id;
+    public long getId() {return id;}
     public void setId(long id) { this.id = id; }
 
     @FXML
@@ -124,7 +115,7 @@ public class MainSceneController implements Initializable{
                     try {
                         var crrStage = (Stage) table.getScene().getWindow();
                         crrStage.close();
-                        newScene = EditProductSceneController.CreateScene(product);
+                        newScene = EditProductSceneController.CreateScene(product, id);
                         newStage.setScene(newScene);
                         newStage.show();
                     } catch (Exception e) {
@@ -183,7 +174,7 @@ public class MainSceneController implements Initializable{
         crrStage.close();
 
         var stage = new Stage();
-        var scene = RegisterProductSceneController.CreateScene();
+        var scene = RegisterProductSceneController.CreateScene(id);
         stage.setScene(scene);
         stage.show();
     }

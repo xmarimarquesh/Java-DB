@@ -41,21 +41,33 @@ public class LoginSceneController {
     protected CheckBox seePass;
 
     @FXML
-    protected void toRegister() throws Exception{
-        var crrStage = (Stage)logar.getScene().getWindow();
-        crrStage.close();
- 
-        var stage = new Stage();
-        var scene = RegisterSceneController.CreateScene();
-        stage.setScene(scene);
-        stage.show();
+    protected TextField pass_log_visible;
+
+    @FXML
+    protected void togglePasswordVisibility(ActionEvent event) {
+        if (seePass.isSelected()) {
+            // Se o checkbox estiver marcado, mostre a senha
+            pass_log_visible.setText(pass_log.getText());
+            pass_log_visible.setVisible(true);
+            pass_log_visible.setManaged(true);
+            pass_log.setVisible(false);
+            pass_log.setManaged(false);
+        } else {
+            // Se o checkbox não estiver marcado, oculte a senha
+            pass_log.setText(pass_log_visible.getText());
+            pass_log.setVisible(true);
+            pass_log.setManaged(true);
+            pass_log_visible.setVisible(false);
+            pass_log_visible.setManaged(false);
+        }
     }
- 
+
     @FXML
     protected void submit(ActionEvent e) throws Exception {
+        String password = seePass.isSelected() ? pass_log_visible.getText() : pass_log.getText();
 
+        // Seu código existente para validação permanece o mesmo
         Context ctx = new Context();
-
         var query = ctx.createQuery(User.class, "from User u where u.name = :name");
         query.setParameter("name", this.name_log.getText());
         var users = query.getResultList();
@@ -72,7 +84,7 @@ public class LoginSceneController {
         
         var user = users.get(0);
 
-        if (!pass_log.getText().equals(user.getPassword())) {
+        if (!password.equals(user.getPassword())) {
             Alert alert = new Alert(
                 AlertType.ERROR,
                 "Senha incorreta!",
@@ -81,12 +93,24 @@ public class LoginSceneController {
             alert.showAndWait();
             return;
         }
- 
+
+        var crrStage = (Stage)logar.getScene().getWindow();
+        crrStage.close();
+
+        var stage = new Stage();
+        var scene = MainSceneController.CreateScene(user.getId());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    @FXML
+    protected void toRegister() throws Exception{
         var crrStage = (Stage)logar.getScene().getWindow();
         crrStage.close();
  
         var stage = new Stage();
-        var scene = MainSceneController.CreateScene(user.getId());
+        var scene = RegisterSceneController.CreateScene();
         stage.setScene(scene);
         stage.show();
     }

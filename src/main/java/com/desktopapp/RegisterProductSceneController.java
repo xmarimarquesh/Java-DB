@@ -15,13 +15,22 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class RegisterProductSceneController {
-    public static Scene CreateScene() throws Exception
+    public static Scene CreateScene(Long id) throws Exception
     {
-        URL sceneUrl = MainSceneController.class.getResource("register-product-scene.fxml");
-        Parent root = FXMLLoader.load(sceneUrl);
+        URL sceneUrl = RegisterProductSceneController.class.getResource("register-product-scene.fxml");
+        FXMLLoader loader = new FXMLLoader(sceneUrl);
+        Parent root = loader.load();
         Scene scene = new Scene(root);
+
+        RegisterProductSceneController controller = loader.getController();
+        controller.setId(id);
+
         return scene;
     }
+
+    protected long id;
+    public long getId() {return id;}
+    public void setId(long id) { this.id = id; }
 
     @FXML
     protected TextField nameProd;
@@ -41,7 +50,7 @@ public class RegisterProductSceneController {
         crrStage.close();
 
         var stage = new Stage();
-        var scene = MainSceneController.CreateScene();
+        var scene = MainSceneController.CreateScene(id);
         stage.setScene(scene);
         stage.show();
     }
@@ -86,7 +95,7 @@ public class RegisterProductSceneController {
         crrStage.close();
 
         var stage = new Stage();
-        var scene = MainSceneController.CreateScene();
+        var scene = MainSceneController.CreateScene(id);
         stage.setScene(scene);
         stage.show();
     }
