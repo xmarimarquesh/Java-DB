@@ -25,5 +25,7 @@ public class EditPassSceneController {
     public void setId(Long id) { this.id = id; }
 
     @FXML
-    protected void editarSenha(){}
+    protected void editarSenha(){
+        System.out.println("Editar senha");
+    }
 }
